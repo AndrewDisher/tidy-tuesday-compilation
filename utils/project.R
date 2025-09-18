@@ -50,7 +50,7 @@ build_project_section <- function(){
   combined_path <- paste("projects", year, month, name, sep = "/")
 
   # Recursively create child directories
-  dir_names <- c("r/", "python/", "static/", "data/") |>
+  dir_names <- c("r/", "python/", "static/") |>
     sapply(
       function(dir){paste(combined_path, dir, sep = "/")},
       USE.NAMES = FALSE
