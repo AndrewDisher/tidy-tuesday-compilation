@@ -59,7 +59,7 @@ only_munros = (
         mutate(closest_name = closest_points['Name']) >>
         mutate(closest_geometry = closest_points['geometry']) >>
         mutate(closest_distance = _.apply(
-            lambda row: row['geometry'].distance(row['closest_geometry']),
+            lambda row: row['geometry'].distance(row['closest_geometry']) / 1000,
             axis=1
         ))
 )
@@ -72,10 +72,10 @@ dist_median = stat.median(only_munros.closest_distance)
 f, ax1 = plt.subplots(figsize=(7, 5))
 
 # Set x axis limits
-ax1.set_xlim(0, max(only_munros["closest_distance"]) + 5000)
+ax1.set_xlim(0, max(only_munros["closest_distance"]) + 5)
 
 # Change axis labels
-ax1.set_xlabel("Distance between Munro and Nearest Munro Top (meters)")
+ax1.set_xlabel("Distance between Munro and Nearest Munro Top (km)")
 ax1.set_ylabel("Count")
 
 sns.histplot(
@@ -100,3 +100,6 @@ sns.kdeplot(
 ax1.axvline(dist_mean, color="black", linestyle="--", label="Mean")
 ax1.axvline(dist_median, color="black", linestyle=":", label="Median")
 ax1.legend()
+
+# Save the graph to static folder
+plt.savefig("projects/2025/August/scottish_munros/static/munro_top_distribution.png")
